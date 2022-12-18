@@ -29,6 +29,4 @@ public class RepositoryController {
     public Result getCloseIssue(){
         return service.showIssue("close");
     }
-
-
 }
