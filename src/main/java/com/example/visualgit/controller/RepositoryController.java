@@ -16,12 +16,12 @@ public class RepositoryController {
     @Autowired
     RepositoryService service;
     @GetMapping("/developer_quantity")
-    public Result getDeveloperQuantityByRepositoryId(int id){
+    public Result getDeveloperQuantityByRepositoryId(String id){
         return service.getDeveloperQuantity(id);
     }
 
     @GetMapping("developer_rank")
-    public Result getDeveloperRankByRepositoryId(int id){
+    public Result getDeveloperRankByRepositoryId(String id){
         return service.getMostActiveDeveloper(id);
     }
 

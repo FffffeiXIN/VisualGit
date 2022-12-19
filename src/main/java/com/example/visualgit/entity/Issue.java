@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Issue {
-    int rank;
-    int startTime;
-    int endTime;
+    int issue_rank;
+    String open_time;
+    String close_time;
 }

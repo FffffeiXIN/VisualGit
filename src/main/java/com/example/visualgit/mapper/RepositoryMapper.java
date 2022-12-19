@@ -13,9 +13,9 @@ import java.util.List;
 @Mapper
 public interface RepositoryMapper extends BaseMapper<Repository> {
     @Select("select name,submission from repository_developer where repository_id = #{id}")
-    List<Developer> selectDeveloperByRepositoryId(int id);
+    List<Developer> selectDeveloperByRepositoryId(String id);
 
-    @Select("select issue_rank,open_time,close_time from issue where state==#{state} and repository_id = #{repos_id}")
+    @Select("select issue_rank,open_time,close_time from issue where state = #{state} and repository_id = #{repos_id}")
     List<Issue> selectIssueByState(String state, String repos_id);
 
     @Select("select submission from repository_developer where repository_id = #{id} and name = #{name}")

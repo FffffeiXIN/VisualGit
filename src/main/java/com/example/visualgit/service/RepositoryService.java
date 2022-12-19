@@ -36,7 +36,7 @@ public class RepositoryService {
         else return Result.ok().code(200).data(map);
     }
 
-    public Result getDeveloperQuantity(int id){
+    public Result getDeveloperQuantity(String id){
         List<Developer> list = mapper.selectDeveloperByRepositoryId(id);
         if(list==null || list.isEmpty()) throw new DataBaseException();
         Map<String,Object> data = new HashMap<>();
@@ -44,7 +44,7 @@ public class RepositoryService {
         return Result.ok().code(200).data(data);
     }
 
-    public Result getMostActiveDeveloper(int id){
+    public Result getMostActiveDeveloper(String id){
         List<Developer> list = mapper.selectDeveloperByRepositoryId(id);
         if(list==null || list.isEmpty()) throw new DataBaseException();
         list.sort((x,y)->y.getSubmission()-x.getSubmission());
@@ -60,9 +60,9 @@ public class RepositoryService {
         map.put("issue",list);
         map.put("quantity",list.size());
         if(state.equals("close")){
-            double avg = MathUtils.getAvg(list, obj -> obj.getEndTime()-obj.getStartTime());
-            double standardDeviation = MathUtils.getStandardDeviation(list, obj -> obj.getEndTime()-obj.getStartTime());
-            double range = MathUtils.getRange(list,obj -> obj.getEndTime()-obj.getStartTime());
+            double avg = MathUtils.getAvg(list, obj -> obj.getClose_time()-obj.getOpen_time());
+            double standardDeviation = MathUtils.getStandardDeviation(list, obj -> obj.getClose_time()-obj.getOpen_time());
+            double range = MathUtils.getRange(list,obj -> obj.getClose_time()-obj.getOpen_time());
             map.put("average",avg);
             map.put("standardDeviation",standardDeviation);
             map.put("range",range);
