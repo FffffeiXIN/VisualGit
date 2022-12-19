@@ -23,10 +23,10 @@ public class RepositoryController {
     public Result getDeveloperRankByRepositoryId(int id){
         return service.getMostActiveDeveloper(id);
     }
-    public Result getOpenIssue(){
-        return service.showIssue("open");
+    public Result getOpenIssue(String repos){
+        return service.showIssue("open",repos);
     }
-    public Result getCloseIssue(){
-        return service.showIssue("close");
+    public Result getCloseIssue(String repos){
+        return service.showIssue("close",repos);
     }
 }
