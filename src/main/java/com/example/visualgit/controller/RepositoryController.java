@@ -15,17 +15,22 @@ public class RepositoryController {
 
     @Autowired
     RepositoryService service;
-    @GetMapping
+    @GetMapping("/developer_quantity")
     public Result getDeveloperQuantityByRepositoryId(int id){
         return service.getDeveloperQuantity(id);
     }
 
+    @GetMapping("developer_rank")
     public Result getDeveloperRankByRepositoryId(int id){
         return service.getMostActiveDeveloper(id);
     }
+
+    @GetMapping("openissue")
     public Result getOpenIssue(String repos){
         return service.showIssue("open",repos);
     }
+
+    @GetMapping("closeissue")
     public Result getCloseIssue(String repos){
         return service.showIssue("close",repos);
     }
