@@ -3,8 +3,8 @@ package com.example.visualgit.entity;
 import lombok.Data;
 
 @Data
-public class Release {
-    String release_id;
-    String release_time;
+public class Commit {
+    String id;
+    String commit_time;
     String repository_id;
 }

@@ -1,5 +1,6 @@
 package com.example.visualgit.utils;
 
+import com.example.visualgit.entity.Commit;
 import com.example.visualgit.entity.Release;
 
 import java.text.ParseException;
@@ -36,7 +37,38 @@ public class MathUtils {
         return max-min;
     }
 
+    public static void sort(List<Commit> list,int i){
+        list.sort(((o1, o2) -> {
+            String time1=o1.getCommit_time();
+            String time2=o2.getCommit_time();
+            time1 = dealDate(time1);
+            time2 = dealDate(time2);
 
+            if(Integer.parseInt(time1.substring(0,4)) < Integer.parseInt(time2.substring(0,4))) return -1;
+            else if(Integer.parseInt(time1.substring(0,4)) > Integer.parseInt(time2.substring(0,4))) return 1;
+            else {
+                if(Integer.parseInt(time1.substring(4,6)) < Integer.parseInt(time2.substring(4,6))) return -1;
+                else if(Integer.parseInt(time1.substring(4,6)) > Integer.parseInt(time2.substring(4,6))) return 1;
+                else {
+                    if(Integer.parseInt(time1.substring(6,8)) < Integer.parseInt(time2.substring(6,8))) return -1;
+                    else if(Integer.parseInt(time1.substring(6,8)) > Integer.parseInt(time2.substring(6,8))) return 1;
+                    else {
+                        if(Integer.parseInt(time1.substring(8,10)) < Integer.parseInt(time2.substring(8,10))) return -1;
+                        else if(Integer.parseInt(time1.substring(8,10)) > Integer.parseInt(time2.substring(8,10))) return 1;
+                        else {
+                            if(Integer.parseInt(time1.substring(10,12)) < Integer.parseInt(time2.substring(10,12))) return -1;
+                            else if(Integer.parseInt(time1.substring(10,12)) > Integer.parseInt(time2.substring(10,12))) return 1;
+                            else {
+                                return Integer.compare(Integer.parseInt(time1.substring(12, 14)), Integer.parseInt(time2.substring(12, 14)));
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        }));
+    }
     public static void sort(List<Release> list){
         list.sort(((o1, o2) -> {
             String time1=o1.getRelease_time();

@@ -1,9 +1,6 @@
 package com.example.visualgit.service;
 
-import com.example.visualgit.entity.Developer;
-import com.example.visualgit.entity.Issue;
-import com.example.visualgit.entity.Repository;
-import com.example.visualgit.entity.Result;
+import com.example.visualgit.entity.*;
 import com.example.visualgit.exception.DataBaseException;
 import com.example.visualgit.mapper.RepositoryMapper;
 import com.example.visualgit.utils.MathUtils;
@@ -152,4 +149,38 @@ public class RepositoryService {
         System.out.println("Abilities:"+ arrayList.toString());
         return Result.ok().code(200);
     }
+
+    public Result showReleaseCommission(){
+        List<Release> releases = mapper.selectRelease();
+        List<Commit> commits = mapper.selectCommit();
+        MathUtils.sort(releases);
+        List<List<Commit>> list = new LinkedList<>();
+        long start = 0;
+        long end = 0;
+        for(Release release:releases){
+            end = Long.parseLong(MathUtils.dealDate(release.getRelease_time()));
+            List<Commit> temp = new LinkedList<>();
+            for(Commit commit:commits) {
+                if (Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) <= end && Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) > start) {
+                    temp.add(commit);
+                }
+            }
+            MathUtils.sort(temp,1);
+            list.add(temp);
+            start = end;
+        }
+        List<Commit> temp = new LinkedList<>();
+        for(Commit commit:commits) {
+            if (Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) > end) {
+                temp.add(commit);
+            }
+        }
+        list.add(temp);
+
+        Map<String,Object> map=new HashMap<>();
+        map.put("release", releases);
+        map.put("commit",list);
+        return Result.ok().code(200).data(map);
+    }
+
 }

@@ -1,9 +1,7 @@
 package com.example.visualgit.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.visualgit.entity.Developer;
-import com.example.visualgit.entity.Issue;
-import com.example.visualgit.entity.Repository;
+import com.example.visualgit.entity.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -32,4 +30,10 @@ public interface RepositoryMapper extends BaseMapper<Repository> {
 
     @Insert("insert into issue values(#{rank},#{id},#{state},#{open_time},#{close_time})")
     void insertIssue(int rank,String id,String state,String open_time,String close_time);
+
+    @Select("select * from release")
+    List<Release> selectRelease();
+
+    @Select("select * from commit")
+    List<Commit> selectCommit();
 }
