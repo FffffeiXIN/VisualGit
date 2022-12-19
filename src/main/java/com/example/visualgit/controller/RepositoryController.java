@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public class RepositoryController {
 
     @Autowired
     RepositoryService service;
+
     @GetMapping("/developer_quantity")
     public Result getDeveloperQuantityByRepositoryId(String id){
         return service.getDeveloperQuantity(id);
@@ -28,12 +30,19 @@ public class RepositoryController {
     }
 
     @GetMapping("openissue")
-    public Result getOpenIssue(String repos){
+    public Result getOpenIssue(String repos) throws ParseException {
         return service.showIssue("open",repos);
     }
 
     @GetMapping("closeissue")
-    public Result getCloseIssue(String repos){
+    public Result getCloseIssue(String repos) throws ParseException {
         return service.showIssue("close",repos);
     }
+
+    @GetMapping("release")
+    public Result showReleaseCommission(){
+        return service.showReleaseCommission();
+    }
+
+
 }
