@@ -20,6 +20,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -53,23 +56,52 @@ public class RepositoryService {
         return Result.ok().code(200).data(map);
     }
 
-    public Result showIssue(String state,String repos_id){
+    public Result showIssue(String state,String repos_id) throws ParseException {
         List<Issue> list=mapper.selectIssueByState(state,repos_id);
         if(list==null || list.isEmpty()) throw new DataBaseException();
         Map<String,Object> map=new HashMap<>();
         map.put("issue",list);
         map.put("quantity",list.size());
-        if(state.equals("close")){
-            double avg = MathUtils.getAvg(list, obj -> obj.getClose_time()-obj.getOpen_time());
-            double standardDeviation = MathUtils.getStandardDeviation(list, obj -> obj.getClose_time()-obj.getOpen_time());
-            double range = MathUtils.getRange(list,obj -> obj.getClose_time()-obj.getOpen_time());
+        DateFormat dateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+        if(state.equals("open")){
+            double avg = MathUtils.getAvg(list, obj -> {
+                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
+                Date end = new Date(System.currentTimeMillis());
+                return (int) (end.getTime() - start.getTime());
+            });
+            double standardDeviation = MathUtils.getStandardDeviation(list, obj -> {
+                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
+                Date end = new Date(System.currentTimeMillis());
+                return (int) (end.getTime() - start.getTime());
+            });
+            double range = MathUtils.getRange(list,obj -> {
+                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
+                Date end = new Date(System.currentTimeMillis());
+                return (int) (end.getTime() - start.getTime());
+            });
+            map.put("average",avg);
+            map.put("standardDeviation",standardDeviation);
+            map.put("range",range);
+        }else {
+            double avg = MathUtils.getAvg(list, obj -> {
+                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
+                Date end = dateFormat.parse(MathUtils.dealDate(obj.getClose_time()));
+                return (int) (end.getTime() - start.getTime());
+            });
+            double standardDeviation = MathUtils.getStandardDeviation(list, obj -> {
+                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
+                Date end = dateFormat.parse(MathUtils.dealDate(obj.getClose_time()));
+                return (int) (end.getTime() - start.getTime());
+            });
+            double range = MathUtils.getRange(list,obj -> {
+                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
+                Date end = dateFormat.parse(MathUtils.dealDate(obj.getClose_time()));
+                return (int) (end.getTime() - start.getTime());
+            });
             map.put("average",avg);
             map.put("standardDeviation",standardDeviation);
             map.put("range",range);
         }
-        map.put("average",-1);
-        map.put("standardDeviation",-1);
-        map.put("range",-1);
         return Result.ok().code(200).data(map);
     }
 
