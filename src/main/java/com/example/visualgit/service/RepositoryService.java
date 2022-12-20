@@ -235,7 +235,24 @@ public class RepositoryService {
 
     public Result analyseCommitByDay(String id){
         List<Commit> commits = mapper.selectCommit(id);
-        return null;
+        Map<String,Object> map=new LinkedHashMap<>();
+
+        for(Commit commit:commits){
+            String date = MathUtils.dealDate(commit.getCommit_time()).substring(0,8);
+            if(map.containsKey(date)){
+                map.put(date,(int)map.get(date)+1);
+            }else {
+                map.put(date,1);
+            }
+        }
+        List<Map.Entry<String,Object>> list=new LinkedList<>(map.entrySet());
+        list.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getKey())));
+        map=new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:list){
+            map.put(entry.getKey(),entry.getValue());
+        }
+
+        return Result.ok().code(200).data(map);
     }
     public Result analyseCommitByWeek(String id){
         //
@@ -243,12 +260,31 @@ public class RepositoryService {
         return null;
     }
     public Result analyseCommitByHour(String id){
-        //
         List<Commit> commits = mapper.selectCommit(id);
-        return null;
+        Map<String,Object> map=new LinkedHashMap<>();
+
+        for(Commit commit:commits){
+            String date = MathUtils.dealDate(commit.getCommit_time()).substring(10,12);
+            if(map.containsKey(date)){
+                map.put(date,(int)map.get(date)+1);
+            }else {
+                map.put(date,1);
+            }
+        }
+        List<Map.Entry<String,Object>> list=new LinkedList<>(map.entrySet());
+        list.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getKey())));
+        map=new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:list){
+            map.put(entry.getKey(),entry.getValue());
+        }
+
+        return Result.ok().code(200).data(map);
     }
 
     public Result getAllRepo(){
-        return null;
+        List<Repository> list = mapper.selectList(null);
+        Map<String,Object> map=new LinkedHashMap<>();
+        map.put("repository",list);
+        return Result.ok().code(200).data(map);
     }
 }
