@@ -264,7 +264,7 @@ public class RepositoryService {
         Map<String,Object> map=new LinkedHashMap<>();
 
         for(Commit commit:commits){
-            String date = MathUtils.dealDate(commit.getCommit_time()).substring(10,12);
+            String date = MathUtils.dealDate(commit.getCommit_time()).substring(8,10);
             if(map.containsKey(date)){
                 map.put(date,(int)map.get(date)+1);
             }else {
