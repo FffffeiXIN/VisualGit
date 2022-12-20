@@ -15,9 +15,21 @@ import java.util.Objects;
 @RequestMapping("crawl")
 public class CrawlerController {
 
+    public static boolean isFinished = false;
     @GetMapping("/do_crawl")
     public Result crawlData(String url) throws IOException {
-        Objects.requireNonNull(ContextFactory.getContext(url)).doCrawl(url);
+        String s = url;
+        int k=0;
+        while (!isFinished) {
+            k=k+1;
+            if(url.contains("issues")) {
+                url = s + "?per_page=100&state=all&page=" + k;
+            }else {
+                url = s + "?per_page=100&page=" + k;
+            }
+            Objects.requireNonNull(ContextFactory.getContext(url)).doCrawl(url);
+        }
+        isFinished=false;
         return Result.ok().code(200);
     }
 

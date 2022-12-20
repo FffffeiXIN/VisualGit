@@ -31,7 +31,6 @@ public class RepositoryService {
         Repository repository = mapper.selectById(id);
         Map<String,Object> map=new HashMap<>();
         map.put("repository",repository);
-
         if(repository==null) throw new DataBaseException();
         else return Result.ok().code(200).data(map);
     }
@@ -71,24 +70,9 @@ public class RepositoryService {
         map.put("quantity",list.size());
         DateFormat dateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
         if(state.equals("open")){
-            double avg = MathUtils.getAvg(list, obj -> {
-                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
-                Date end = new Date(System.currentTimeMillis());
-                return (int) (end.getTime() - start.getTime());
-            });
-            double standardDeviation = MathUtils.getStandardDeviation(list, obj -> {
-                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
-                Date end = new Date(System.currentTimeMillis());
-                return (int) (end.getTime() - start.getTime());
-            });
-            double range = MathUtils.getRange(list,obj -> {
-                Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));
-                Date end = new Date(System.currentTimeMillis());
-                return (int) (end.getTime() - start.getTime());
-            });
-            map.put("average",avg);
-            map.put("standardDeviation",standardDeviation);
-            map.put("range",range);
+            map.put("average",-1);
+            map.put("standardDeviation",-1);
+            map.put("range",-1);
         }else {
             double avg = MathUtils.getAvg(list, obj -> {
                 Date start = dateFormat.parse(MathUtils.dealDate(obj.getOpen_time()));

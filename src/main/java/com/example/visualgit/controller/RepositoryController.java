@@ -36,7 +36,7 @@ public class RepositoryController {
 
     @GetMapping("closeissue")
     public Result getCloseIssue(String repos) throws ParseException {
-        return service.showIssue("close",repos);
+        return service.showIssue("closed",repos);
     }
 
     @GetMapping("release")
