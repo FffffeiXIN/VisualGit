@@ -164,9 +164,9 @@ public class RepositoryService {
         return Result.ok().code(200);
     }
 
-    public Result showReleaseCommission(){
-        List<Release> releases = mapper.selectRelease();
-        List<Commit> commits = mapper.selectCommit();
+    public Result showReleaseCommission(String id){
+        List<Release> releases = mapper.selectRelease(id);
+        List<Commit> commits = mapper.selectCommit(id);
         List<List<Commit>> res = new ArrayList<>();
         MathUtils.sort(releases);
 //        List<List<Commit>> list = new LinkedList<>();
@@ -199,9 +199,9 @@ public class RepositoryService {
         return Result.ok().code(200).data(map);
     }
 
-    public Map<Release,List<Commit>> showRestReleaseCommission(){
-        List<Release> releases = mapper.selectRelease();
-        List<Commit> commits = mapper.selectCommit();
+    public Map<Release,List<Commit>> showRestReleaseCommission(String id){
+        List<Release> releases = mapper.selectRelease(id);
+        List<Commit> commits = mapper.selectCommit(id);
         MathUtils.sort(releases);
         List<List<Commit>> list = new LinkedList<>();
         long start = 0;
@@ -233,4 +233,22 @@ public class RepositoryService {
         return map;
     }
 
+    public Result analyseCommitByDay(String id){
+        List<Commit> commits = mapper.selectCommit(id);
+        return null;
+    }
+    public Result analyseCommitByWeek(String id){
+        //
+        List<Commit> commits = mapper.selectCommit(id);
+        return null;
+    }
+    public Result analyseCommitByHour(String id){
+        //
+        List<Commit> commits = mapper.selectCommit(id);
+        return null;
+    }
+
+    public Result getAllRepo(){
+        return null;
+    }
 }

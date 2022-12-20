@@ -31,9 +31,9 @@ public interface RepositoryMapper extends BaseMapper<Repository> {
     @Insert("insert into issue values(#{rank},#{id},#{state},#{open_time},#{close_time})")
     void insertIssue(int rank,String id,String state,String open_time,String close_time);
 
-    @Select("select * from release")
-    List<Release> selectRelease();
+    @Select("select * from release where repository_id = #{id}")
+    List<Release> selectRelease(String id);
 
-    @Select("select * from commit")
-    List<Commit> selectCommit();
+    @Select("select * from commit where repository_id = #{id}")
+    List<Commit> selectCommit(String id);
 }

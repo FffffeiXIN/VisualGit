@@ -40,9 +40,28 @@ public class RepositoryController {
     }
 
     @GetMapping("release")
-    public Result showReleaseCommission(){
-        return service.showReleaseCommission();
+    public Result showReleaseCommission(String id){
+        return service.showReleaseCommission(id);
     }
 
+    @GetMapping("analyseCommitByDay")
+    public Result analyseCommitByDay(String id){
+        return service.analyseCommitByDay(id);
+    }
+
+    @GetMapping("analyseCommitByWeek")
+    public Result analyseCommitByWeek(String id){
+        return service.analyseCommitByWeek(id);
+    }
+
+    @GetMapping("getAllRepo")
+    public Result getAllRepo(){
+        return service.getAllRepo();
+    }
+
+    @GetMapping("analyseCommitByHour")
+    public Result analyseCommitByHour(String id){
+        return service.analyseCommitByHour(id);
+    }
 
 }

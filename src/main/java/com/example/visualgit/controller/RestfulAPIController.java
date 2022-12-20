@@ -40,6 +40,6 @@ public class RestfulAPIController {
     public Map<Release,List<Commit>> getReleaseInfoByRepositoryId(@PathVariable(value = "owner") String owner, @PathVariable(value = "repos") String repos){
         String id = "https://api.github.com/repos/" + owner + "/" + repos;
 //        System.out.println(id);
-        return service.showRestReleaseCommission();
+        return service.showRestReleaseCommission(id);
     }
 }
