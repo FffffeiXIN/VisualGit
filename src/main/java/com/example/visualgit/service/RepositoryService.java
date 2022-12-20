@@ -167,12 +167,13 @@ public class RepositoryService {
     public Result showReleaseCommission(){
         List<Release> releases = mapper.selectRelease();
         List<Commit> commits = mapper.selectCommit();
+        List<List<Commit>> res = new ArrayList<>();
         MathUtils.sort(releases);
-        List<List<Commit>> list = new LinkedList<>();
+//        List<List<Commit>> list = new LinkedList<>();
         long start = 0;
         long end = 0;
-        for(Release release:releases){
-            end = Long.parseLong(MathUtils.dealDate(release.getRelease_time()));
+        for(int i=0;i<releases.size();i++){
+            end = Long.parseLong(MathUtils.dealDate(releases.get(i).getRelease_time()));
             List<Commit> temp = new LinkedList<>();
             for(Commit commit:commits) {
                 if (Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) <= end && Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) > start) {
@@ -180,20 +181,21 @@ public class RepositoryService {
                 }
             }
             MathUtils.sort(temp,1);
-            list.add(temp);
+//            list.add(temp);
             start = end;
+            res.add(temp);
         }
-        List<Commit> temp = new LinkedList<>();
-        for(Commit commit:commits) {
-            if (Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) > end) {
-                temp.add(commit);
-            }
-        }
-        list.add(temp);
+//        List<Commit> temp = new LinkedList<>();
+//        for(Commit commit:commits) {
+//            if (Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) > end) {
+//                temp.add(commit);
+//            }
+//        }
+//        list.add(temp);
 
         Map<String,Object> map=new HashMap<>();
-        map.put("release", releases);
-        map.put("commits",list);
+        map.put("release", res);
+//        map.put("commits",list);
         return Result.ok().code(200).data(map);
     }
 
@@ -229,9 +231,6 @@ public class RepositoryService {
             map.put(releases.get(i),list.get(i));
         }
         return map;
-//        map.put("release", releases);
-//        map.put("commit",list);
-//        return Result.ok().code(200).data(map);
     }
 
 }
