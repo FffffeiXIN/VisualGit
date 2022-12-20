@@ -43,6 +43,16 @@ public class RepositoryService {
         data.put("quantity",list.size());
         return Result.ok().code(200).data(data);
     }
+    public HashMap<String,Developer> getRestMostActiveDeveloper(String id){
+        List<Developer> list = mapper.selectDeveloperByRepositoryId(id);
+        if(list==null || list.isEmpty()) throw new DataBaseException();
+        list.sort((x,y)->y.getSubmission()-x.getSubmission());
+        HashMap<String,Developer> res = new LinkedHashMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            res.put("rank "+i,list.get(i));
+        }
+        return res;
+    }
 
     public Result getMostActiveDeveloper(String id){
         List<Developer> list = mapper.selectDeveloperByRepositoryId(id);
@@ -55,7 +65,7 @@ public class RepositoryService {
 
     public Result showIssue(String state,String repos_id) throws ParseException {
         List<Issue> list=mapper.selectIssueByState(state,repos_id);
-        if(list==null || list.isEmpty()) throw new DataBaseException();
+        if(list==null) throw new DataBaseException();
         Map<String,Object> map=new HashMap<>();
         map.put("issue",list);
         map.put("quantity",list.size());
@@ -100,6 +110,10 @@ public class RepositoryService {
             map.put("range",range);
         }
         return Result.ok().code(200).data(map);
+    }
+
+    public List<Issue> getRestIssues(String state,String repos_id){
+        return mapper.selectIssueByState(state,repos_id);
     }
 
     public Result getSubmissionByRepositoryDeveloper(int id,String name){
@@ -179,8 +193,45 @@ public class RepositoryService {
 
         Map<String,Object> map=new HashMap<>();
         map.put("release", releases);
-        map.put("commit",list);
+        map.put("commits",list);
         return Result.ok().code(200).data(map);
+    }
+
+    public Map<Release,List<Commit>> showRestReleaseCommission(){
+        List<Release> releases = mapper.selectRelease();
+        List<Commit> commits = mapper.selectCommit();
+        MathUtils.sort(releases);
+        List<List<Commit>> list = new LinkedList<>();
+        long start = 0;
+        long end = 0;
+        for(Release release:releases){
+            end = Long.parseLong(MathUtils.dealDate(release.getRelease_time()));
+            List<Commit> temp = new LinkedList<>();
+            for(Commit commit:commits) {
+                if (Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) <= end && Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) > start) {
+                    temp.add(commit);
+                }
+            }
+            MathUtils.sort(temp,1);
+            list.add(temp);
+            start = end;
+        }
+        List<Commit> temp = new LinkedList<>();
+        for(Commit commit:commits) {
+            if (Long.parseLong(MathUtils.dealDate(commit.getCommit_time())) > end) {
+                temp.add(commit);
+            }
+        }
+        list.add(temp);
+
+        Map<Release,List<Commit>> map=new LinkedHashMap<>();
+        for (int i = 0; i < releases.size(); i++) {
+            map.put(releases.get(i),list.get(i));
+        }
+        return map;
+//        map.put("release", releases);
+//        map.put("commit",list);
+//        return Result.ok().code(200).data(map);
     }
 
 }
