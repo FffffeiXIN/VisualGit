@@ -1,5 +1,6 @@
 package com.example.visualgit.service.crawler;
 
+import com.example.visualgit.controller.CrawlerController;
 import com.example.visualgit.entity.Result;
 import com.example.visualgit.mapper.RepositoryMapper;
 import com.example.visualgit.utils.GetBeanUtil;
@@ -41,6 +42,10 @@ public abstract class AbstractCrawlerService implements CrawlerService{
         String json = stringBuilder.toString();
         JsonParser jsonParser = new JsonParser();
         JsonArray array= (JsonArray) jsonParser.parse(json);
+        if(array.size()==0){
+            CrawlerController.isFinished=true;
+            return Result.ok();
+        }
         for(int i=0;i<array.size();++i) {
             doCrawl(array.get(i).getAsJsonObject());
         }

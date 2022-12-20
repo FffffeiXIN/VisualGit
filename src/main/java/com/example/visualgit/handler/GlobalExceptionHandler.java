@@ -14,5 +14,9 @@ public class GlobalExceptionHandler {
         return Result.error().code(500).message("数据库操作错误");
     }
 
+    @ExceptionHandler(Exception.class)
+    public Result UnknownException(){
+        return Result.error().code(500).message("未知错误");
+    }
 
 }
