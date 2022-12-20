@@ -282,7 +282,7 @@ public class RepositoryService {
     }
 
     public Result getAllRepo(){
-        List<Repository> list = mapper.selectList(null);
+        List<Repository> list = mapper.selectRepos();
         Map<String,Object> map=new LinkedHashMap<>();
         map.put("repository",list);
         return Result.ok().code(200).data(map);

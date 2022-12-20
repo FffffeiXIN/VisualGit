@@ -36,4 +36,8 @@ public interface RepositoryMapper extends BaseMapper<Repository> {
 
     @Select("select * from commit where repository_id = #{id}")
     List<Commit> selectCommit(String id);
+
+    @Select("select * from repository")
+    List<Repository> selectRepos();
+
 }
