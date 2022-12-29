@@ -8,7 +8,7 @@ public class ReleaseCrawlerServiceImpl extends AbstractCrawlerService {
     public Result doCrawl(JsonObject object) {
         String id = object.get("url").getAsString();
         String time = object.get("created_at").getAsString();
-        mapper.insertRelease(id,time,repository);
+        mapper.insertRelease(id, time, repository);
         return Result.ok().code(200);
     }
 }

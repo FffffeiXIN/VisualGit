@@ -38,7 +38,7 @@ public class GetBeanUtil implements ApplicationContextAware {
     /**
      * 获取bean
      *
-     * @param c c
+     * @param c   c
      * @param <T> 泛型
      * @return bean
      */
@@ -48,9 +48,10 @@ public class GetBeanUtil implements ApplicationContextAware {
 
     /**
      * 获取bean
-     * @param c c
-     * @param  name 名称
-     * @param <T> 泛型
+     *
+     * @param c    c
+     * @param name 名称
+     * @param <T>  泛型
      * @return T 泛型
      */
     public static <T> T getBean(String name, Class<T> c) {

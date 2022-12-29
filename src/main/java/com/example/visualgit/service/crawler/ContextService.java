@@ -4,7 +4,8 @@ import java.io.IOException;
 
 public class ContextService {
     CrawlerService crawlerService;
-    public ContextService(CrawlerService crawlerService){
+
+    public ContextService(CrawlerService crawlerService) {
         this.crawlerService = crawlerService;
     }
 
